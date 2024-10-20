@@ -5,8 +5,8 @@ import android.content.Context
 import com.example.githubapp.data.GitRepo
 import com.example.githubapp.data.models.NetworkService
 import com.example.githubapp.di.ApplicationContext
+import com.example.githubapp.di.modules.ApplicationModule
 import dagger.Component
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton

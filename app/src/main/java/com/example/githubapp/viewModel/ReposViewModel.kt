@@ -16,12 +16,13 @@ import kotlinx.coroutines.launch
 
 class ReposViewModel(val repo: GitRepo): ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<List<Repo>>>(UiState.Loading)
+    private val _uiState = MutableStateFlow<UiState<List<Repo>>>(UiState.Success(ArrayList()))
 
     val uiState: StateFlow<UiState<List<Repo>>> = _uiState
 
     fun fetchRepos(name: String) {
         viewModelScope.launch {
+            _uiState.value = UiState.Loading
             repo.fetchRepos(name)
                 .catch {
                     Log.d(this.javaClass.simpleName, "error - ${it.message}")

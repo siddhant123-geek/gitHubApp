@@ -1,7 +1,7 @@
-package com.example.githubapp.di.modules
+package com.example.githubapp.di.components
 
 import com.example.githubapp.di.ActivityScope
-import com.example.githubapp.di.components.ApplicationComponent
+import com.example.githubapp.di.modules.ActivityModule
 import com.example.githubapp.ui.HomeActivity
 import dagger.Component
 

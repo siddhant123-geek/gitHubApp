@@ -1,4 +1,4 @@
-package com.example.githubapp.di.components
+package com.example.githubapp.di.modules
 
 import android.app.Application
 import android.content.Context
