@@ -1,12 +1,12 @@
 package com.example.githubapp.ui.home
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -16,33 +16,33 @@ import com.example.githubapp.GitApplication
 import com.example.githubapp.data.models.Repo
 import com.example.githubapp.data.models.RepoDetail
 import com.example.githubapp.databinding.ActivityHomeScreenBinding
+import com.example.githubapp.databinding.ActivityHomeScreenWithPaginationBinding
 import com.example.githubapp.di.components.DaggerActivityComponent
 import com.example.githubapp.di.modules.ActivityModule
 import com.example.githubapp.ui.detail.RepoDetailActivity
 import com.example.githubapp.utils.NetworkUtils
 import com.example.githubapp.utils.UiState
 import com.example.githubapp.viewModel.ReposViewModel
+import com.example.githubapp.viewModel.ReposViewModelWithPagination
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivityWithPagination : AppCompatActivity() {
 
-    private lateinit var binding: ActivityHomeScreenBinding
-
-    @Inject
-    lateinit var networkUtils: NetworkUtils
+    private lateinit var binding: ActivityHomeScreenWithPaginationBinding
 
     @Inject
-    lateinit var viewModel: ReposViewModel
+    lateinit var viewModel: ReposViewModelWithPagination
 
     @Inject
-    lateinit var adapter: ReposAdapter
+    lateinit var adapter: ReposPagingDataAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies()
 
-        binding = ActivityHomeScreenBinding.inflate(LayoutInflater.from(this))
+        binding = ActivityHomeScreenWithPaginationBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
         setupUi()
@@ -51,7 +51,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupClickListenerForEachRepo() {
-        adapter.openDetailScreenCallback = {
+        adapter.openRepoDetailsCallback = {
             // launch new screen
             val intent = Intent(this, RepoDetailActivity::class.java)
             val repoDetail = RepoDetail(
@@ -63,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
             )
             Log.d(this.javaClass.simpleName,
                 "setupClickListenerForEachRepo: repoDetail put in the extras " +
-                    repoDetail.name)
+                        repoDetail.name)
             intent.putExtra("repoDetail", repoDetail)
             startActivity(intent)
         }
@@ -77,8 +77,8 @@ class HomeActivity : AppCompatActivity() {
             viewModel.fetchRepos(nameString)
         }
 
-        binding.getPagination.setOnClickListener {
-            startActivity(Intent(this, HomeActivityWithPagination::class.java))
+        binding.getWithoutPagination.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }
 
@@ -98,43 +98,17 @@ class HomeActivity : AppCompatActivity() {
     private fun setupObserver() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    Log.d(this.javaClass.simpleName, "setupObserver: uiState value " + it)
-                    when(it) {
-                        is UiState.Success -> {
-                            binding.progressBar.visibility = View.GONE
-                            renderList(it.data)
-                            binding.reposList.visibility = View.VISIBLE
-                        }
-                        is UiState.Error -> {
-                            binding.progressBar.visibility = View.GONE
-                            Log.d(this@HomeActivity.javaClass.simpleName,
-                                "setupObserver: uiState error " + it.e)
-                            Toast.makeText(this@HomeActivity,
-                                "Error in fetching news - ${it.e}",
-                                Toast.LENGTH_LONG).show()
-                        }
-                        is UiState.Loading -> {
-                            Log.d(this@HomeActivity.javaClass.simpleName,
-                                "setupObserver: uiState loading ")
-                            binding.progressBar.visibility = View.VISIBLE
-                            binding.reposList.visibility = View.GONE
-                        }
-                    }
+                viewModel.uiState.collectLatest {
+                    adapter.submitData(it)
                 }
             }
         }
-    }
-
-    private fun renderList(listOfRepos: List<Repo>) {
-        adapter.addListItems(listOfRepos)
-        adapter.notifyDataSetChanged()
     }
 
     private fun injectDependencies() {
         DaggerActivityComponent.builder()
             .applicationComponent((application as GitApplication).applicationComponent)
             .activityModule(ActivityModule(this))
-            .build().inject1(this)
+            .build().inject2(this)
     }
 }

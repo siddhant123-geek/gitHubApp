@@ -3,14 +3,21 @@ package com.example.githubapp.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.githubapp.data.GitRepo
 import com.example.githubapp.data.ReposDataBase
+import com.example.githubapp.data.ReposPagingSource
 import com.example.githubapp.data.models.Owner
 import com.example.githubapp.data.models.Repo
 import com.example.githubapp.data.models.RepoForDb
+import com.example.githubapp.utils.AppConstants.CACHE_SIZE
+import com.example.githubapp.utils.AppConstants.PER_PAGE
 import com.example.githubapp.utils.NetworkUtils
 import com.example.githubapp.utils.UiState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -38,7 +45,7 @@ class ReposViewModel(
                     .collect {
                         _uiState.value = UiState.Success(it)
 
-                        val repoForDbs = it.take(15).map {
+                        val repoForDbs = it.take(CACHE_SIZE).map {
                             RepoForDb(
                                 name = name,
                                 fullName = it.fullName,
@@ -76,6 +83,5 @@ class ReposViewModel(
 
             }
         }
-
     }
 }

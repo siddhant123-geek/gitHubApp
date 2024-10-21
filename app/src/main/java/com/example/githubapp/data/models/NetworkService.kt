@@ -9,4 +9,9 @@ interface NetworkService {
 
     @GET("search/repositories")
     suspend fun getRepos(@Query("q") name: String): RepoResponse
+
+    @GET("search/repositories")
+    suspend fun getReposWithPagination(@Query("q") name: String,
+                                       @Query("page") page: Int,
+                                       @Query("per_page") perPage: Int): RepoResponse
 }

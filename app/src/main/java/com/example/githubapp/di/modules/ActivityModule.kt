@@ -10,9 +10,11 @@ import com.example.githubapp.di.ActivityContext
 import com.example.githubapp.di.ActivityScope
 import com.example.githubapp.di.DbName
 import com.example.githubapp.ui.home.ReposAdapter
+import com.example.githubapp.ui.home.ReposPagingDataAdapter
 import com.example.githubapp.utils.NetworkUtils
 import com.example.githubapp.utils.ViewModelProviderFactory
 import com.example.githubapp.viewModel.ReposViewModel
+import com.example.githubapp.viewModel.ReposViewModelWithPagination
 import dagger.Module
 import dagger.Provides
 
@@ -67,5 +69,26 @@ class ActivityModule(private val activity: AppCompatActivity) {
                 ReposViewModel(gitRepo, dbService, networkUtils)
             }
         )[ReposViewModel::class.java]
+    }
+
+    @ActivityScope
+    @Provides
+    fun provideReposViewModelWithPagination(
+        gitRepo: GitRepo
+    ): ReposViewModelWithPagination {
+        return ViewModelProvider(
+            activity,
+            ViewModelProviderFactory(
+                ReposViewModelWithPagination::class
+            ) {
+                ReposViewModelWithPagination(gitRepo)
+            }
+        )[ReposViewModelWithPagination::class.java]
+    }
+
+    @ActivityScope
+    @Provides
+    fun provideReposPagingAdapter(): ReposPagingDataAdapter {
+        return ReposPagingDataAdapter()
     }
 }
