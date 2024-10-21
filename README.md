@@ -1,4 +1,4 @@
-# NewsAppMVVMForAssignment
+# GitHub Application
 This is my GitHub application project, where I have used the frameworks/libraries like dagger, retrofit, coroutines, MVVM, Room Db etc.
 
 # Architecture used is MVVM(Model View View Model)
