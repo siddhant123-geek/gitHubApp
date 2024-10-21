@@ -31,16 +31,16 @@ This is my GitHub application project, where I have used the frameworks/librarie
 
 # Dependencies used
 # Dagger(For providing dependency)
-  implementation "com.google.dagger:dagger:2.42"
-  kapt "com.google.dagger:dagger-compiler:2.42"
+- implementation "com.google.dagger:dagger:2.42"
+- kapt "com.google.dagger:dagger-compiler:2.42"
 # Glide(For image loading)
-  implementation 'com.github.bumptech.glide:glide:4.11.0'
+- implementation 'com.github.bumptech.glide:glide:4.11.0'
 # Room Db(For offline support)
-  implementation ("androidx.room:room-runtime:2.5.0")
-  implementation ("androidx.room:room-ktx:2.5.0")
-  kapt ("androidx.room:room-compiler:2.5.0")
+- implementation ("androidx.room:room-runtime:2.5.0")
+- implementation ("androidx.room:room-ktx:2.5.0")
+- kapt ("androidx.room:room-compiler:2.5.0")
 # Paging3
-  implementation 'androidx.paging:paging-runtime-ktx:3.2.1'
+- implementation 'androidx.paging:paging-runtime-ktx:3.2.1'
 # Retrofit
-  implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-  implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+- implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+- implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
