@@ -1,4 +1,4 @@
-package com.example.githubapp.ui
+package com.example.githubapp.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,13 +8,17 @@ import com.example.githubapp.databinding.RepoItemBinding
 
 class ReposAdapter(private val reposList: ArrayList<Repo>):
     RecyclerView.Adapter<ReposAdapter.DataViewHolder>() {
-
-    class DataViewHolder(private val binding: RepoItemBinding):
+        var openDetailScreenCallback: ((Repo) -> Unit)? = null
+    inner class DataViewHolder(private val binding: RepoItemBinding):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: Repo) {
             binding.repoName.text = repo.name
             binding.repoFullName.text = repo.fullName
             binding.description.text = repo.description
+
+            binding.root.setOnClickListener {
+                openDetailScreenCallback?.invoke(repo)
+            }
         }
 
     }

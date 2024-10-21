@@ -1,12 +1,11 @@
-package com.example.githubapp.ui
+package com.example.githubapp.ui.home
 
-import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,10 +14,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapp.GitApplication
 import com.example.githubapp.data.models.Repo
+import com.example.githubapp.data.models.RepoDetail
 import com.example.githubapp.databinding.ActivityHomeScreenBinding
-import com.example.githubapp.di.components.ApplicationComponent
 import com.example.githubapp.di.components.DaggerActivityComponent
 import com.example.githubapp.di.modules.ActivityModule
+import com.example.githubapp.ui.detail.RepoDetailActivity
 import com.example.githubapp.utils.UiState
 import com.example.githubapp.viewModel.ReposViewModel
 import kotlinx.coroutines.launch
@@ -43,6 +43,26 @@ class HomeActivity : AppCompatActivity() {
 
         setupUi()
         setupObserver()
+        setupClickListenerForEachRepo()
+    }
+
+    private fun setupClickListenerForEachRepo() {
+        adapter.openDetailScreenCallback = {
+            // launch new screen
+            val intent = Intent(this, RepoDetailActivity::class.java)
+            val repoDetail = RepoDetail(
+                it.name,
+                it.description,
+                it.projectLink,
+                it.language,
+                it.owner?.imageUrl
+            )
+            Log.d(this.javaClass.simpleName,
+                "setupClickListenerForEachRepo: repoDetail put in the extras " +
+                    repoDetail.name)
+            intent.putExtra("repoDetail", repoDetail)
+            startActivity(intent)
+        }
     }
 
     fun setupUi() {

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -61,4 +62,10 @@ dependencies {
     // viewModel and lifeCycle scope dependencies
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+
+    // glide dependency
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    // browser dependency
+    implementation 'androidx.browser:browser:1.4.0'
 }

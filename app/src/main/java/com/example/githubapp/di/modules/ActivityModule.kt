@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.githubapp.data.GitRepo
 import com.example.githubapp.di.ActivityContext
 import com.example.githubapp.di.ActivityScope
-import com.example.githubapp.ui.ReposAdapter
+import com.example.githubapp.ui.home.ReposAdapter
 import com.example.githubapp.utils.ViewModelProviderFactory
 import com.example.githubapp.viewModel.ReposViewModel
 import dagger.Module
 import dagger.Provides
-import kotlin.contracts.contract
 
 @Module
 class ActivityModule(private val activity: AppCompatActivity) {
