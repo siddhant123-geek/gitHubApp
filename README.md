@@ -18,8 +18,8 @@ This is my GitHub application project, where I have used the frameworks/librarie
 # HomeScreen with pagination screen
 - Near to the search button on home page, there is a pagination button too.
 - When the pagination button is clicked, it navigates to the home screen with pagination
-- This screen shows the repositories for the seacrhed keyword with pagination
-- Initially it loads 10 items and it loads more on demand as the user scrolls
+- This screen shows the repositories for the searched keyword with pagination
+- Initially it loads 10 items and it loads more on demand as the user scrolls down
 # HomeScreen
 ![HomeScreenGitHubApp](https://github.com/user-attachments/assets/506abf8b-bc17-4184-9f19-60e55723faa3)
 
