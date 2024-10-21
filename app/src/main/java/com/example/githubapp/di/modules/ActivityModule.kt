@@ -3,10 +3,14 @@ package com.example.githubapp.di.modules
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.example.githubapp.data.GitRepo
+import com.example.githubapp.data.ReposDataBase
 import com.example.githubapp.di.ActivityContext
 import com.example.githubapp.di.ActivityScope
+import com.example.githubapp.di.DbName
 import com.example.githubapp.ui.home.ReposAdapter
+import com.example.githubapp.utils.NetworkUtils
 import com.example.githubapp.utils.ViewModelProviderFactory
 import com.example.githubapp.viewModel.ReposViewModel
 import dagger.Module
@@ -29,15 +33,38 @@ class ActivityModule(private val activity: AppCompatActivity) {
 
     @ActivityScope
     @Provides
+    fun provideNetworkUtils(
+        @ActivityContext context: Context
+    ): NetworkUtils {
+        return NetworkUtils(context)
+    }
+
+    @DbName
+    @Provides
+    fun provideDbName(): String = "reposDb"
+
+    @ActivityScope
+    @Provides
+    fun provideDatabaseService(
+        @ActivityContext context: Context,
+        @DbName dbName: String
+    ): ReposDataBase {
+        return Room.databaseBuilder(context, ReposDataBase::class.java, dbName).build()
+    }
+
+    @ActivityScope
+    @Provides
     fun provideReposViewModel(
-        gitRepo: GitRepo
+        gitRepo: GitRepo,
+        dbService: ReposDataBase,
+        networkUtils: NetworkUtils
     ): ReposViewModel {
         return ViewModelProvider(
             activity,
             ViewModelProviderFactory(
                 ReposViewModel::class
             ) {
-                ReposViewModel(gitRepo)
+                ReposViewModel(gitRepo, dbService, networkUtils)
             }
         )[ReposViewModel::class.java]
     }

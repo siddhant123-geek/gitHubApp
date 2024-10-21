@@ -1,6 +1,5 @@
 package com.example.githubapp.di
 
-import java.lang.annotation.RetentionPolicy
 import javax.inject.Qualifier
 
 @Qualifier
@@ -14,3 +13,7 @@ annotation class ApplicationContext
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class BaseUrl
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class DbName

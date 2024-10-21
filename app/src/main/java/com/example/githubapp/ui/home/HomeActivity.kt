@@ -19,6 +19,7 @@ import com.example.githubapp.databinding.ActivityHomeScreenBinding
 import com.example.githubapp.di.components.DaggerActivityComponent
 import com.example.githubapp.di.modules.ActivityModule
 import com.example.githubapp.ui.detail.RepoDetailActivity
+import com.example.githubapp.utils.NetworkUtils
 import com.example.githubapp.utils.UiState
 import com.example.githubapp.viewModel.ReposViewModel
 import kotlinx.coroutines.launch
@@ -27,6 +28,9 @@ import javax.inject.Inject
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeScreenBinding
+
+    @Inject
+    lateinit var networkUtils: NetworkUtils
 
     @Inject
     lateinit var viewModel: ReposViewModel
@@ -65,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun setupUi() {
+    private fun setupUi() {
         binding.searchButton.setOnClickListener {
             val nameString = binding.searchBar.text.toString()
             Log.d(this.javaClass.name, "setupUi: entered text is $nameString")

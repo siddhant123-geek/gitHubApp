@@ -33,7 +33,6 @@ class ApplicationModule(private val application: Application) {
         return GsonConverterFactory.create()
     }
 
-
     @Provides
     fun provideNetworkService(
         @BaseUrl baseUrl: String,
